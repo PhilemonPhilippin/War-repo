@@ -4,8 +4,9 @@
     {
         public void Run()
         {
+
             Card[] cardDeck = CreateCardDeck();
-            foreach(Card card in cardDeck)
+            foreach (Card card in cardDeck)
                 Console.WriteLine($"{card.value} + {card.suit}");
             Player playerOne = RegisterPlayer();
             Player playerTwo = RegisterPlayer();
@@ -18,7 +19,26 @@
         }
 
 
+        public void PlayTurn(Player playerOne, Player playerTwo)
+        {
+            if (!IsAnyQueueFull(playerOne, playerTwo))
+            {
+                
+            }
+        }
+        public void War(Player playerOne, Player playerTwo)
+        {
 
+        }
+
+        public void Duel(Player playerOne, Player playerTwo)
+        {
+
+        }
+        public bool IsAnyQueueFull(Player playerOne, Player playerTwo)
+        {
+            return playerOne.Deck.Count == 52 || playerTwo.Deck.Count == 52;
+        }
         public Card[] CreateCardDeck()
         {
             Card[] cardDeck = new Card[52];
@@ -67,7 +87,7 @@
             Console.WriteLine("Hello player. What is your name?");
             player.Name = Console.ReadLine();
             return player;
-            
+
         }
     }
 }
