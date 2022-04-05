@@ -2,6 +2,8 @@
 {
     public class Game
     {
+        public List<Card> jackpot = new List<Card>();
+        string winner = "";
         public void Run()
         {
 
@@ -16,28 +18,116 @@
                 Console.WriteLine($"Player One Card: {card.value} + {card.suit}");
             foreach (Card card in playerTwo.Deck)
                 Console.WriteLine($"Player Two Card: {card.value} + {card.suit}");
+            while (!IsAnyQueueEmpty(playerOne, playerTwo))
+            {
+                PlayTurn(playerOne, playerTwo);
+            }
+            Console.WriteLine("Game over");
+            Console.WriteLine($"Winner is : {winner}");
         }
 
 
         public void PlayTurn(Player playerOne, Player playerTwo)
         {
-            if (!IsAnyQueueFull(playerOne, playerTwo))
-            {
-                
-            }
+            if (!IsAnyQueueEmpty(playerOne, playerTwo))
+                Duel(playerOne, playerTwo);
         }
         public void War(Player playerOne, Player playerTwo)
         {
+            bool equality = true;
+            while (equality)
+            {
+                Console.WriteLine("WAR!!");
+                if (!IsAnyQueueEmpty(playerOne, playerTwo))
+                {
+                    Card hiddenCardOne = playerOne.Deck.Dequeue();
+                    Console.WriteLine($"Hidden card of player one: {hiddenCardOne.value} + {hiddenCardOne.suit}");
+                    Card hiddenCardTwo = playerTwo.Deck.Dequeue();
+                    Console.WriteLine($"Hidden card of player two: {hiddenCardTwo.value} + {hiddenCardTwo.suit}");
+                    jackpot.Add(hiddenCardOne);
+                    jackpot.Add(hiddenCardTwo);
+                    Console.WriteLine($"Jackpot count: {jackpot.Count}");
+                    if (!IsAnyQueueEmpty(playerOne, playerTwo))
+                    {
+                        Card cardOne = playerOne.Deck.Dequeue();
+                        Console.WriteLine($"Card of player one : {cardOne.value} + {cardOne.suit}");
+                        Card cardTwo = playerTwo.Deck.Dequeue();
+                        Console.WriteLine($"Card of player two : {cardTwo.value} + {cardTwo.suit}");
+                        jackpot.Add(cardOne);
+                        jackpot.Add(cardTwo);
+                        Console.WriteLine($"Jackpot count: {jackpot.Count}");
+                        if (cardOne.value > cardTwo.value)
+                        {
+                            CashOutJackpot(playerOne);
+                            equality = false;
+                        }
+                        else if (cardTwo.value > cardOne.value)
+                        {
+                            CashOutJackpot(playerTwo);
+                            equality = false;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Equality again");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Un des joueurs n'a plus de carte");
+                    }
+                }
 
+
+                // Chaque joueur dépose une carte face cachée
+                // Les mettre dans le jackpot
+                // Tester deux cartes, les mettre dans le jackpot
+                // Si un des joueurs gagne, il remporte toutes les cartes dans le jackpot + clear le jackpot
+                // Si égalité, on recommence au début de War (donc boucle plus haut)
+            }
         }
 
         public void Duel(Player playerOne, Player playerTwo)
         {
-
+            if (!IsAnyQueueEmpty(playerOne, playerTwo))
+            {
+                Card cardOne = playerOne.Deck.Dequeue();
+                Console.WriteLine($"Card of player one : {cardOne.value} + {cardOne.suit}");
+                Card cardTwo = playerTwo.Deck.Dequeue();
+                Console.WriteLine($"Card of player two : {cardTwo.value} + {cardTwo.suit}");
+                jackpot.Add(cardOne);
+                jackpot.Add(cardTwo);
+                Console.WriteLine($"Jackpot count: {jackpot.Count}");
+                if (cardOne.value > cardTwo.value)
+                {
+                    CashOutJackpot(playerOne);
+                }
+                else if (cardTwo.value > cardOne.value)
+                {
+                    CashOutJackpot(playerTwo);
+                }
+                else
+                {
+                    War(playerOne, playerTwo);
+                }
+                // Tester deux cartes, les mettre dans le jackpot?
+                // Si  un des joueurs gagne, il remporte le jackpot + clear le jackpot
+                // Si égalité, invoquer la méthode War
+            }
         }
-        public bool IsAnyQueueFull(Player playerOne, Player playerTwo)
+        public void CashOutJackpot(Player player)
         {
-            return playerOne.Deck.Count == 52 || playerTwo.Deck.Count == 52;
+            Console.WriteLine($"{player.Name} wins the jackpot of : {jackpot.Count} cards");
+            foreach (Card card in jackpot)
+                player.Deck.Enqueue(card);
+            jackpot.Clear();
+        }
+        public bool IsAnyQueueEmpty(Player playerOne, Player playerTwo)
+        {
+            if (playerOne.Deck.Count == 0)
+                winner = "player two";
+            else if (playerTwo.Deck.Count == 0)
+                winner = "player one";
+            return playerOne.Deck.Count == 0 || playerTwo.Deck.Count == 0;
         }
         public Card[] CreateCardDeck()
         {
