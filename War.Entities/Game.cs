@@ -177,7 +177,6 @@
             Console.WriteLine("Hello player. What is your name?");
             player.Name = Console.ReadLine();
             return player;
-
         }
     }
 }
