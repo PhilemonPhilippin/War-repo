@@ -6,7 +6,7 @@
         string winner = "";
         public void Run()
         {
-
+            //TODO: Mélanger les cartes du jackpot pour voir si ça boucle moins longtemps en général.
             Card[] cardDeck = CreateCardDeck();
             foreach (Card card in cardDeck)
                 Console.WriteLine($"{card.value} + {card.suit}");
@@ -74,6 +74,12 @@
                     else
                     {
                         Console.WriteLine("Un des joueurs n'a plus de carte");
+                        equality = false;
+                        if (playerOne.Deck.Count == 0)
+                            winner = "player two";
+                        else if (playerTwo.Deck.Count == 0)
+                            winner = "player one";
+                        Console.WriteLine($"Winner is : {winner}");
                     }
                 }
 
