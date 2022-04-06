@@ -6,7 +6,6 @@
         string winner = "";
         public void Run()
         {
-            //TODO: Mélanger les cartes du jackpot pour voir si ça boucle moins longtemps en général.
             Card[] cardDeck = CreateCardDeck();
             foreach (Card card in cardDeck)
                 Console.WriteLine($"{card.value} + {card.suit}");
@@ -82,13 +81,6 @@
                         Console.WriteLine($"Winner is : {winner}");
                     }
                 }
-
-
-                // Chaque joueur dépose une carte face cachée
-                // Les mettre dans le jackpot
-                // Tester deux cartes, les mettre dans le jackpot
-                // Si un des joueurs gagne, il remporte toutes les cartes dans le jackpot + clear le jackpot
-                // Si égalité, on recommence au début de War (donc boucle plus haut)
             }
         }
 
@@ -115,17 +107,19 @@
                 {
                     War(playerOne, playerTwo);
                 }
-                // Tester deux cartes, les mettre dans le jackpot?
-                // Si  un des joueurs gagne, il remporte le jackpot + clear le jackpot
-                // Si égalité, invoquer la méthode War
             }
         }
         public void CashOutJackpot(Player player)
         {
             Console.WriteLine($"{player.Name} wins the jackpot of : {jackpot.Count} cards");
-            foreach (Card card in jackpot)
-                player.Deck.Enqueue(card);
-            jackpot.Clear();
+            // je simule de mélanger les cartes du jackpot avant de les remettre dans le deck du joueur
+            while (jackpot.Count > 0)
+            {
+                Random rand = new Random();
+                int jackpotCardIndex = rand.Next(0, jackpot.Count);
+                player.Deck.Enqueue(jackpot[jackpotCardIndex]);
+                jackpot.Remove(jackpot[jackpotCardIndex]);
+            }
         }
         public bool IsAnyQueueEmpty(Player playerOne, Player playerTwo)
         {
