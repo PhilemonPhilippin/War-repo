@@ -23,7 +23,6 @@
             while (!IsAnyQueueEmpty())
             {
                 DeclarationOfWar();
-
                 Card hiddenCardOne = playerOne.Deck.Dequeue();
                 Console.WriteLine($"Hidden card of {playerOne.Name}, inserted in the jackpot: {hiddenCardOne.value} + {hiddenCardOne.suit}");
                 Card hiddenCardTwo = artificialEnemy.Deck.Dequeue();
@@ -39,17 +38,11 @@
                     jackpot.Add(cardOne);
                     jackpot.Add(cardTwo);
                     if (cardOne.value > cardTwo.value)
-                    {
                         CashOutJackpot(playerOne);
-                    }
                     else if (cardTwo.value > cardOne.value)
-                    {
                         CashOutJackpot(artificialEnemy);
-                    }
                     else
-                    {
                         Console.WriteLine("Equality again");
-                    }
                 }
             }
         }
@@ -75,17 +68,11 @@
                 jackpot.Add(cardOne);
                 jackpot.Add(cardTwo);
                 if (cardOne.value > cardTwo.value)
-                {
                     CashOutJackpot(playerOne);
-                }
                 else if (cardTwo.value > cardOne.value)
-                {
                     CashOutJackpot(artificialEnemy);
-                }
                 else
-                {
                     War();
-                }
             }
         }
         public void CashOutJackpot(Player player)
