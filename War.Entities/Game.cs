@@ -7,6 +7,7 @@
         //Clean le code
         public List<Card> jackpot = new List<Card>();
         string winner = "";
+        
         public void Run()
         {
             Card[] cardDeck = CreateCardDeck();
@@ -39,7 +40,7 @@
             bool equality = true;
             while (equality)
             {
-                Console.WriteLine("WAR!!");
+                DeclarationOfWar();
                 if (!IsAnyQueueEmpty(playerOne, playerTwo))
                 {
                     Card hiddenCardOne = playerOne.Deck.Dequeue();
@@ -84,6 +85,17 @@
                         Console.WriteLine($"Winner is : {winner}");
                     }
                 }
+            }
+        }
+        public void DeclarationOfWar()
+        {
+            Console.WriteLine("Equality between your cards!");
+            Console.WriteLine("Declare war to your ennemy if you want to proceed.");
+            string userInput = "";
+            while (userInput != "war")
+            {
+                Console.WriteLine("To declare war, simply write war");
+                userInput = Console.ReadLine().ToLower();
             }
         }
 
