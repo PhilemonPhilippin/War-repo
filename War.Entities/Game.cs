@@ -18,24 +18,12 @@
             playerOne = RegisterPlayer();
             playerTwo = RegisterPlayer();
             DistributeCards(cardDeck);
-            // Loops to check that the decks are well distributed
-            foreach (Card card in playerOne.Deck)
-                Console.WriteLine($"Player One Card: {card.value} + {card.suit}");
-            foreach (Card card in playerTwo.Deck)
-                Console.WriteLine($"Player Two Card: {card.value} + {card.suit}");
             while (!IsAnyQueueEmpty())
             {
-                PlayTurn();
+                Duel();
             }
             Console.WriteLine("Game over");
             Console.WriteLine($"Winner is : {winner}");
-        }
-
-
-        public void PlayTurn()
-        {
-            if (!IsAnyQueueEmpty())
-                Duel();
         }
         public void War()
         {
