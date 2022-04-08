@@ -7,41 +7,43 @@
         //Clean le code
         public List<Card> jackpot = new List<Card>();
         string winner = "";
+        Player playerOne;
+        Player playerTwo;
         
         public void Run()
         {
             Card[] cardDeck = CreateCardDeck();
             foreach (Card card in cardDeck)
                 Console.WriteLine($"{card.value} + {card.suit}");
-            Player playerOne = RegisterPlayer();
-            Player playerTwo = RegisterPlayer();
-            DistributeCards(playerOne, playerTwo, cardDeck);
+            playerOne = RegisterPlayer();
+            playerTwo = RegisterPlayer();
+            DistributeCards(cardDeck);
             // Loops to check that the decks are well distributed
             foreach (Card card in playerOne.Deck)
                 Console.WriteLine($"Player One Card: {card.value} + {card.suit}");
             foreach (Card card in playerTwo.Deck)
                 Console.WriteLine($"Player Two Card: {card.value} + {card.suit}");
-            while (!IsAnyQueueEmpty(playerOne, playerTwo))
+            while (!IsAnyQueueEmpty())
             {
-                PlayTurn(playerOne, playerTwo);
+                PlayTurn();
             }
             Console.WriteLine("Game over");
             Console.WriteLine($"Winner is : {winner}");
         }
 
 
-        public void PlayTurn(Player playerOne, Player playerTwo)
+        public void PlayTurn()
         {
-            if (!IsAnyQueueEmpty(playerOne, playerTwo))
-                Duel(playerOne, playerTwo);
+            if (!IsAnyQueueEmpty())
+                Duel();
         }
-        public void War(Player playerOne, Player playerTwo)
+        public void War()
         {
             bool equality = true;
             while (equality)
             {
                 DeclarationOfWar();
-                if (!IsAnyQueueEmpty(playerOne, playerTwo))
+                if (!IsAnyQueueEmpty())
                 {
                     Card hiddenCardOne = playerOne.Deck.Dequeue();
                     Console.WriteLine($"Hidden card of player one: {hiddenCardOne.value} + {hiddenCardOne.suit}");
@@ -50,7 +52,7 @@
                     jackpot.Add(hiddenCardOne);
                     jackpot.Add(hiddenCardTwo);
                     Console.WriteLine($"Jackpot count: {jackpot.Count}");
-                    if (!IsAnyQueueEmpty(playerOne, playerTwo))
+                    if (!IsAnyQueueEmpty())
                     {
                         Card cardOne = playerOne.Deck.Dequeue();
                         Console.WriteLine($"Card of player one : {cardOne.value} + {cardOne.suit}");
@@ -99,9 +101,9 @@
             }
         }
 
-        public void Duel(Player playerOne, Player playerTwo)
+        public void Duel()
         {
-            if (!IsAnyQueueEmpty(playerOne, playerTwo))
+            if (!IsAnyQueueEmpty())
             {
                 Card cardOne = playerOne.Deck.Dequeue();
                 Console.WriteLine($"Card of player one : {cardOne.value} + {cardOne.suit}");
@@ -120,7 +122,7 @@
                 }
                 else
                 {
-                    War(playerOne, playerTwo);
+                    War();
                 }
             }
         }
@@ -136,7 +138,7 @@
                 jackpot.Remove(jackpot[jackpotCardIndex]);
             }
         }
-        public bool IsAnyQueueEmpty(Player playerOne, Player playerTwo)
+        public bool IsAnyQueueEmpty()
         {
             if (playerOne.Deck.Count == 0)
                 winner = "player two";
@@ -162,7 +164,7 @@
             return cardDeck;
         }
 
-        public void DistributeCards(Player playerOne, Player playerTwo, Card[] cardDeck)
+        public void DistributeCards(Card[] cardDeck)
         {
             playerOne.Deck = new Queue<Card>();
             playerTwo.Deck = new Queue<Card>();
