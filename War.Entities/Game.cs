@@ -8,7 +8,7 @@
         public List<Card> jackpot = new List<Card>();
         string winner = "";
         Player playerOne;
-        Player playerTwo;
+        Player artificialEnemy;
         
         public void Run()
         {
@@ -16,7 +16,7 @@
             foreach (Card card in cardDeck)
                 Console.WriteLine($"{card.value} + {card.suit}");
             playerOne = RegisterPlayer();
-            playerTwo = RegisterPlayer();
+            artificialEnemy = new Player () { Name="ArtificialEnemy"};
             DistributeCards(cardDeck);
             while (!IsAnyQueueEmpty())
             {
@@ -35,7 +35,7 @@
                 {
                     Card hiddenCardOne = playerOne.Deck.Dequeue();
                     Console.WriteLine($"Hidden card of player one: {hiddenCardOne.value} + {hiddenCardOne.suit}");
-                    Card hiddenCardTwo = playerTwo.Deck.Dequeue();
+                    Card hiddenCardTwo = artificialEnemy.Deck.Dequeue();
                     Console.WriteLine($"Hidden card of player two: {hiddenCardTwo.value} + {hiddenCardTwo.suit}");
                     jackpot.Add(hiddenCardOne);
                     jackpot.Add(hiddenCardTwo);
@@ -44,7 +44,7 @@
                     {
                         Card cardOne = playerOne.Deck.Dequeue();
                         Console.WriteLine($"Card of player one : {cardOne.value} + {cardOne.suit}");
-                        Card cardTwo = playerTwo.Deck.Dequeue();
+                        Card cardTwo = artificialEnemy.Deck.Dequeue();
                         Console.WriteLine($"Card of player two : {cardTwo.value} + {cardTwo.suit}");
                         jackpot.Add(cardOne);
                         jackpot.Add(cardTwo);
@@ -56,7 +56,7 @@
                         }
                         else if (cardTwo.value > cardOne.value)
                         {
-                            CashOutJackpot(playerTwo);
+                            CashOutJackpot(artificialEnemy);
                             equality = false;
                         }
                         else
@@ -70,7 +70,7 @@
                         equality = false;
                         if (playerOne.Deck.Count == 0)
                             winner = "player two";
-                        else if (playerTwo.Deck.Count == 0)
+                        else if (artificialEnemy.Deck.Count == 0)
                             winner = "player one";
                         Console.WriteLine($"Winner is : {winner}");
                     }
@@ -95,7 +95,7 @@
             {
                 Card cardOne = playerOne.Deck.Dequeue();
                 Console.WriteLine($"Card of player one : {cardOne.value} + {cardOne.suit}");
-                Card cardTwo = playerTwo.Deck.Dequeue();
+                Card cardTwo = artificialEnemy.Deck.Dequeue();
                 Console.WriteLine($"Card of player two : {cardTwo.value} + {cardTwo.suit}");
                 jackpot.Add(cardOne);
                 jackpot.Add(cardTwo);
@@ -106,7 +106,7 @@
                 }
                 else if (cardTwo.value > cardOne.value)
                 {
-                    CashOutJackpot(playerTwo);
+                    CashOutJackpot(artificialEnemy);
                 }
                 else
                 {
@@ -129,10 +129,10 @@
         public bool IsAnyQueueEmpty()
         {
             if (playerOne.Deck.Count == 0)
-                winner = "player two";
-            else if (playerTwo.Deck.Count == 0)
-                winner = "player one";
-            return playerOne.Deck.Count == 0 || playerTwo.Deck.Count == 0;
+                winner = artificialEnemy.Name;
+            else if (artificialEnemy.Deck.Count == 0)
+                winner = playerOne.Name;
+            return playerOne.Deck.Count == 0 || artificialEnemy.Deck.Count == 0;
         }
         public Card[] CreateCardDeck()
         {
@@ -155,7 +155,7 @@
         public void DistributeCards(Card[] cardDeck)
         {
             playerOne.Deck = new Queue<Card>();
-            playerTwo.Deck = new Queue<Card>();
+            artificialEnemy.Deck = new Queue<Card>();
             // Create a list to store all cards of the central deck to distribute them later
             List<Card> list = new List<Card>();
             foreach (Card card in cardDeck)
@@ -167,11 +167,11 @@
                 playerOne.Deck.Enqueue(list[randIndex]);
                 list.Remove(list[randIndex]);
             }
-            while (playerTwo.Deck.Count < 26)
+            while (artificialEnemy.Deck.Count < 26)
             {
                 Random rand = new Random();
                 int randIndex = rand.Next(0, list.Count);
-                playerTwo.Deck.Enqueue(list[randIndex]);
+                artificialEnemy.Deck.Enqueue(list[randIndex]);
                 list.Remove(list[randIndex]);
             }
         }
