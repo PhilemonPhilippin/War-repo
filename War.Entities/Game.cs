@@ -5,12 +5,12 @@
         public List<Card> jackpot = new List<Card>();
         Player playerOne;
         Player artificialEnemy;
-        
+
         public void Run()
         {
             Card[] cardDeck = CreateCardDeck();
             playerOne = RegisterPlayer();
-            artificialEnemy = new Player () { Name="AI Bot"};
+            artificialEnemy = new Player() { Name = "AI Bot" };
             DistributeCards(cardDeck);
             while (!IsAnyQueueEmpty())
             {
@@ -23,34 +23,34 @@
             while (!IsAnyQueueEmpty())
             {
                 DeclarationOfWar();
-                
-                    Card hiddenCardOne = playerOne.Deck.Dequeue();
-                    Console.WriteLine($"Hidden card of {playerOne.Name}, inserted in the jackpot: {hiddenCardOne.value} + {hiddenCardOne.suit}");
-                    Card hiddenCardTwo = artificialEnemy.Deck.Dequeue();
-                    Console.WriteLine($"Hidden card of {artificialEnemy.Name}, inserted in the jackpot: {hiddenCardTwo.value} + {hiddenCardTwo.suit}");
-                    jackpot.Add(hiddenCardOne);
-                    jackpot.Add(hiddenCardTwo);
-                    if (!IsAnyQueueEmpty())
+
+                Card hiddenCardOne = playerOne.Deck.Dequeue();
+                Console.WriteLine($"Hidden card of {playerOne.Name}, inserted in the jackpot: {hiddenCardOne.value} + {hiddenCardOne.suit}");
+                Card hiddenCardTwo = artificialEnemy.Deck.Dequeue();
+                Console.WriteLine($"Hidden card of {artificialEnemy.Name}, inserted in the jackpot: {hiddenCardTwo.value} + {hiddenCardTwo.suit}");
+                jackpot.Add(hiddenCardOne);
+                jackpot.Add(hiddenCardTwo);
+                if (!IsAnyQueueEmpty())
+                {
+                    Card cardOne = playerOne.Deck.Dequeue();
+                    Console.WriteLine($"Card of {playerOne.Name} : {cardOne.value} + {cardOne.suit}");
+                    Card cardTwo = artificialEnemy.Deck.Dequeue();
+                    Console.WriteLine($"Card of {artificialEnemy.Name} : {cardTwo.value} + {cardTwo.suit}");
+                    jackpot.Add(cardOne);
+                    jackpot.Add(cardTwo);
+                    if (cardOne.value > cardTwo.value)
                     {
-                        Card cardOne = playerOne.Deck.Dequeue();
-                        Console.WriteLine($"Card of {playerOne.Name} : {cardOne.value} + {cardOne.suit}");
-                        Card cardTwo = artificialEnemy.Deck.Dequeue();
-                        Console.WriteLine($"Card of {artificialEnemy.Name} : {cardTwo.value} + {cardTwo.suit}");
-                        jackpot.Add(cardOne);
-                        jackpot.Add(cardTwo);
-                        if (cardOne.value > cardTwo.value)
-                        {
-                            CashOutJackpot(playerOne);
-                        }
-                        else if (cardTwo.value > cardOne.value)
-                        {
-                            CashOutJackpot(artificialEnemy);
-                        }
-                        else
-                        {
-                            Console.WriteLine("Equality again");
-                        }
+                        CashOutJackpot(playerOne);
                     }
+                    else if (cardTwo.value > cardOne.value)
+                    {
+                        CashOutJackpot(artificialEnemy);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Equality again");
+                    }
+                }
             }
         }
         public void DeclarationOfWar()
@@ -62,10 +62,8 @@
             {
                 Console.WriteLine("To declare war, simply write war ...");
                 userInput = Console.ReadLine().ToLower();
-
             } while (userInput != "war");
         }
-
         public void Duel()
         {
             if (!IsAnyQueueEmpty())
@@ -140,7 +138,6 @@
             }
             return cardDeck;
         }
-
         public void DistributeCards(Card[] cardDeck)
         {
             playerOne.Deck = new Queue<Card>();
@@ -164,7 +161,6 @@
                 list.Remove(list[randIndex]);
             }
         }
-
         public Player RegisterPlayer()
         {
             Player player = new Player();
