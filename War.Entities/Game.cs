@@ -2,6 +2,9 @@
 {
     public class Game
     {
+        //TODO: Faire une méthode WarDeclaration() interactive
+        //Personnaliser les "player one player two"
+        //Clean le code
         public List<Card> jackpot = new List<Card>();
         string winner = "";
         public void Run()
