@@ -2,37 +2,28 @@
 {
     public class Game
     {
-        //TODO: Faire une méthode WarDeclaration() interactive
-        //Personnaliser les "player one player two"
-        //Clean le code
         public List<Card> jackpot = new List<Card>();
-        string winner = "";
         Player playerOne;
         Player artificialEnemy;
         
         public void Run()
         {
             Card[] cardDeck = CreateCardDeck();
-            foreach (Card card in cardDeck)
-                Console.WriteLine($"{card.value} + {card.suit}");
             playerOne = RegisterPlayer();
-            artificialEnemy = new Player () { Name="ArtificialEnemy"};
+            artificialEnemy = new Player () { Name="AI Bot"};
             DistributeCards(cardDeck);
             while (!IsAnyQueueEmpty())
             {
                 Duel();
             }
-            Console.WriteLine("Game over");
-            Console.WriteLine($"Winner is : {winner}");
+            DeclareWinner();
         }
         public void War()
         {
-            bool equality = true;
-            while (equality)
+            while (!IsAnyQueueEmpty())
             {
                 DeclarationOfWar();
-                if (!IsAnyQueueEmpty())
-                {
+                
                     Card hiddenCardOne = playerOne.Deck.Dequeue();
                     Console.WriteLine($"Hidden card of {playerOne.Name}, inserted in the jackpot: {hiddenCardOne.value} + {hiddenCardOne.suit}");
                     Card hiddenCardTwo = artificialEnemy.Deck.Dequeue();
@@ -47,43 +38,29 @@
                         Console.WriteLine($"Card of {artificialEnemy.Name} : {cardTwo.value} + {cardTwo.suit}");
                         jackpot.Add(cardOne);
                         jackpot.Add(cardTwo);
-                        Console.WriteLine($"Jackpot count: {jackpot.Count}");
                         if (cardOne.value > cardTwo.value)
                         {
                             CashOutJackpot(playerOne);
-                            equality = false;
                         }
                         else if (cardTwo.value > cardOne.value)
                         {
                             CashOutJackpot(artificialEnemy);
-                            equality = false;
                         }
                         else
                         {
                             Console.WriteLine("Equality again");
                         }
                     }
-                    else
-                    {
-                        Console.WriteLine("Un des joueurs n'a plus de carte");
-                        equality = false;
-                        if (playerOne.Deck.Count == 0)
-                            winner = artificialEnemy.Name;
-                        else if (artificialEnemy.Deck.Count == 0)
-                            winner = playerOne.Name;
-                        Console.WriteLine($"Winner is : {winner}");
-                    }
-                }
             }
         }
         public void DeclarationOfWar()
         {
-            Console.WriteLine("Equality between your cards!");
-            Console.WriteLine("Declare war to your ennemy if you want to proceed.");
+            Console.WriteLine("EQUALITY between your cards !!");
+            Console.WriteLine("Declare WAR to your enemy if you want to proceed.");
             string userInput;
             do
             {
-                Console.WriteLine("To declare war, simply write war");
+                Console.WriteLine("To declare war, simply write war ...");
                 userInput = Console.ReadLine().ToLower();
 
             } while (userInput != "war");
@@ -116,7 +93,7 @@
         public void CashOutJackpot(Player player)
         {
             Console.WriteLine($"{player.Name} wins the jackpot of : {jackpot.Count} cards");
-            // je simule de mélanger les cartes du jackpot avant de les remettre dans le deck du joueur
+            // I simulate shuffling cards before putting them in the winner's queue
             while (jackpot.Count > 0)
             {
                 Random rand = new Random();
@@ -130,11 +107,21 @@
         }
         public bool IsAnyQueueEmpty()
         {
-            if (playerOne.Deck.Count == 0)
-                winner = artificialEnemy.Name;
-            else if (artificialEnemy.Deck.Count == 0)
-                winner = playerOne.Name;
             return playerOne.Deck.Count == 0 || artificialEnemy.Deck.Count == 0;
+        }
+        public void DeclareWinner()
+        {
+            if (playerOne.Deck.Count == 0)
+            {
+                Console.WriteLine($"{playerOne.Name} has no card anymore!");
+                Console.WriteLine($"The winner is: {artificialEnemy.Name}");
+            }
+            else if (artificialEnemy.Deck.Count == 0)
+            {
+                Console.WriteLine($"{artificialEnemy.Name} has no card anymore!");
+                Console.WriteLine($"The winner is: {playerOne.Name}");
+            }
+            Console.WriteLine("Game over");
         }
         public Card[] CreateCardDeck()
         {
@@ -181,7 +168,7 @@
         public Player RegisterPlayer()
         {
             Player player = new Player();
-            Console.WriteLine("Hello player. What is your name?");
+            Console.WriteLine("Hello player ! What is your name? ...");
             player.Name = Console.ReadLine();
             return player;
         }
