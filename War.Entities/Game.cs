@@ -34,18 +34,17 @@
                 if (!IsAnyQueueEmpty())
                 {
                     Card hiddenCardOne = playerOne.Deck.Dequeue();
-                    Console.WriteLine($"Hidden card of player one: {hiddenCardOne.value} + {hiddenCardOne.suit}");
+                    Console.WriteLine($"Hidden card of {playerOne.Name}, inserted in the jackpot: {hiddenCardOne.value} + {hiddenCardOne.suit}");
                     Card hiddenCardTwo = artificialEnemy.Deck.Dequeue();
-                    Console.WriteLine($"Hidden card of player two: {hiddenCardTwo.value} + {hiddenCardTwo.suit}");
+                    Console.WriteLine($"Hidden card of {artificialEnemy.Name}, inserted in the jackpot: {hiddenCardTwo.value} + {hiddenCardTwo.suit}");
                     jackpot.Add(hiddenCardOne);
                     jackpot.Add(hiddenCardTwo);
-                    Console.WriteLine($"Jackpot count: {jackpot.Count}");
                     if (!IsAnyQueueEmpty())
                     {
                         Card cardOne = playerOne.Deck.Dequeue();
-                        Console.WriteLine($"Card of player one : {cardOne.value} + {cardOne.suit}");
+                        Console.WriteLine($"Card of {playerOne.Name} : {cardOne.value} + {cardOne.suit}");
                         Card cardTwo = artificialEnemy.Deck.Dequeue();
-                        Console.WriteLine($"Card of player two : {cardTwo.value} + {cardTwo.suit}");
+                        Console.WriteLine($"Card of {artificialEnemy.Name} : {cardTwo.value} + {cardTwo.suit}");
                         jackpot.Add(cardOne);
                         jackpot.Add(cardTwo);
                         Console.WriteLine($"Jackpot count: {jackpot.Count}");
@@ -69,9 +68,9 @@
                         Console.WriteLine("Un des joueurs n'a plus de carte");
                         equality = false;
                         if (playerOne.Deck.Count == 0)
-                            winner = "player two";
+                            winner = artificialEnemy.Name;
                         else if (artificialEnemy.Deck.Count == 0)
-                            winner = "player one";
+                            winner = playerOne.Name;
                         Console.WriteLine($"Winner is : {winner}");
                     }
                 }
@@ -81,12 +80,13 @@
         {
             Console.WriteLine("Equality between your cards!");
             Console.WriteLine("Declare war to your ennemy if you want to proceed.");
-            string userInput = "";
-            while (userInput != "war")
+            string userInput;
+            do
             {
                 Console.WriteLine("To declare war, simply write war");
                 userInput = Console.ReadLine().ToLower();
-            }
+
+            } while (userInput != "war");
         }
 
         public void Duel()
@@ -94,12 +94,11 @@
             if (!IsAnyQueueEmpty())
             {
                 Card cardOne = playerOne.Deck.Dequeue();
-                Console.WriteLine($"Card of player one : {cardOne.value} + {cardOne.suit}");
+                Console.WriteLine($"Card of {playerOne.Name} : {cardOne.value} + {cardOne.suit}");
                 Card cardTwo = artificialEnemy.Deck.Dequeue();
-                Console.WriteLine($"Card of player two : {cardTwo.value} + {cardTwo.suit}");
+                Console.WriteLine($"Card of {artificialEnemy.Name} : {cardTwo.value} + {cardTwo.suit}");
                 jackpot.Add(cardOne);
                 jackpot.Add(cardTwo);
-                Console.WriteLine($"Jackpot count: {jackpot.Count}");
                 if (cardOne.value > cardTwo.value)
                 {
                     CashOutJackpot(playerOne);
@@ -125,6 +124,9 @@
                 player.Deck.Enqueue(jackpot[jackpotCardIndex]);
                 jackpot.Remove(jackpot[jackpotCardIndex]);
             }
+            Console.WriteLine($"Number of cards in {playerOne.Name}'s deck: {playerOne.Deck.Count}.");
+            Console.WriteLine($"Number of cards in {artificialEnemy.Name}'s deck: {artificialEnemy.Deck.Count}.");
+            Console.WriteLine("====================================");
         }
         public bool IsAnyQueueEmpty()
         {
